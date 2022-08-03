@@ -1,0 +1,153 @@
+﻿<Window x:Class="ReportGenerate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReportGenerate"
+        mc:Ignorable="d"
+        Title="Протокол++" Height="450" Width="800"
+        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        Icon="/Report.png" MinWidth="370" MinHeight="250">
+    <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="Path"
+                    Content="Путь к файлу" 
+                    HorizontalAlignment="Stretch" 
+                    Margin="5,5,5,5" 
+                    Grid.Row="7" 
+                    VerticalAlignment="Stretch" 
+                    Background="White" 
+                    Click="Path_Click" 
+                    FontWeight="Bold" 
+                    FontSize="14" 
+                    TabIndex="4"/>
+            <Button x:Name="Save" 
+                    Content="Выполнить" 
+                    HorizontalAlignment="Stretch" 
+                    Margin="5,5,5,5" Grid.Row="8" 
+                    VerticalAlignment="Stretch" 
+                    Background="White" 
+                    Click="Save_Click" 
+                    FontWeight="Bold" 
+                    FontSize="14" 
+                    TabIndex="5"/>
+            <Label Content="Количество протоколов" 
+                   Margin="0,0,0,0" 
+                   Grid.Row="0" 
+                   VerticalContentAlignment="Bottom" 
+                   HorizontalContentAlignment="Center" 
+                   FontWeight="Bold" 
+                   Padding="1,5,1,1" />
+            <Label Content="Дата начальная" 
+                   Margin="0,0,0,0" 
+                   Grid.Row="2" 
+                   VerticalContentAlignment="Bottom" 
+                   HorizontalContentAlignment="Center" 
+                   FontWeight="Bold" 
+                   Padding="1,5,1,1" />
+            <Label Content="Дата конечная" 
+                   Margin="0,0,0,0" 
+                   Grid.Row="4" 
+                   VerticalContentAlignment="Bottom" 
+                   HorizontalContentAlignment="Center" 
+                   FontWeight="Bold" 
+                   Padding="1,5,1,1" />
+            <TextBox x:Name="Count" 
+                     Margin="5,0,5,0" 
+                     Grid.Row="1" 
+                     VerticalContentAlignment="Center" 
+                     HorizontalContentAlignment="Center" 
+                     MinWidth="50" MinHeight="25" 
+                     MaxLines="6" PreviewTextInput="Count_PreviewTextInput" 
+                     BorderBrush="{x:Null}" 
+                     Foreground="#FFC8EA04" 
+                     SelectionBrush="{x:Null}" 
+                     Padding="5,0,5,0" 
+                     FontWeight="Bold" 
+                     FontSize="16" 
+                     UndoLimit="9" 
+                     VerticalScrollBarVisibility="Disabled" 
+                     TabIndex="0">
+                <TextBox.Background>
+                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+                </TextBox.Background>
+            </TextBox>
+            <DatePicker x:Name="DateStart" 
+                        HorizontalAlignment="Stretch" 
+                        Margin="5,0,5,0" 
+                        Grid.Row="3" 
+                        VerticalAlignment="Stretch" 
+                        BorderBrush="{x:Null}" 
+                        FirstDayOfWeek="Monday" 
+                        RenderTransformOrigin="0.5,0.5" 
+                        TabIndex="2"/>
+            <DatePicker x:Name="DateStop" 
+                        HorizontalAlignment="Stretch" 
+                        Margin="5,0,5,0" 
+                        Grid.Row="5" 
+                        VerticalAlignment="Stretch" 
+                        BorderBrush="{x:Null}" 
+                        FirstDayOfWeek="Monday" 
+                        RenderTransformOrigin="0.5,0.5" 
+                        TabIndex="3"/>
+            <TextBlock x:Name="TBtimer" HorizontalAlignment="Stretch" Margin="5,0,5,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Bottom" TextAlignment="Center" TextTrimming="WordEllipsis"/>
+        </Grid>
+        <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="Report" 
+                     HorizontalAlignment="Stretch" 
+                     Margin="0,0,0,0" 
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Stretch" 
+                     SelectionOpacity="0"
+                     AcceptsReturn="True" 
+                     BorderBrush="{x:Null}" 
+                     TabIndex="1" 
+                     SelectionBrush="{x:Null}" 
+                     Background="{x:Null}" TextChanged="Report_TextChanged"/>
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Stretch"
+                       Margin="0,0,0,0"
+                       TextWrapping="Wrap" TextTrimming="WordEllipsis" LineStackingStrategy="BlockLineHeight">
+                <TextBlock.Text>
+                    [N] - номер протокола;
+                    [D: format] - дата;
+                    [V: a_b] - случайное число между;
+                    [M: a,b,c] - случайное из массива.
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+        <ProgressBar x:Name="PB" Grid.Row="1"
+                     HorizontalAlignment="Stretch" 
+                     Margin="0,0,0,0" 
+                     VerticalAlignment="Stretch" 
+                     Height="20" 
+                     Grid.ColumnSpan="2" 
+                     BorderBrush="#FF06B025" 
+                     Background="White" 
+                     Visibility="Collapsed"/>
+    </Grid>
+</Window>
