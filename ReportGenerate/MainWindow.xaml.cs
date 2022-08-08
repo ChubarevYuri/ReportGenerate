@@ -27,7 +27,9 @@ namespace ReportGenerate
         private DateTime starttime;
         System.Windows.Threading.DispatcherTimer _timer = null;
 
+#pragma warning disable IDE1006 // Стили именования
         private void timerStart()
+#pragma warning restore IDE1006 // Стили именования
         {
             _timer = new System.Windows.Threading.DispatcherTimer();
             _timer.Tick += new EventHandler(timerTick);
@@ -35,7 +37,9 @@ namespace ReportGenerate
             _timer.Start();
         }
 
+#pragma warning disable IDE1006 // Стили именования
         private void timerTick(object sender, EventArgs e)
+#pragma warning restore IDE1006 // Стили именования
         {
             TBtimer.Text = "";
             _timer.Stop();
@@ -54,6 +58,15 @@ namespace ReportGenerate
                         Report.Text = f.ReadToEnd();
                 }
                 System.IO.File.SetAttributes("~text.t", System.IO.FileAttributes.Hidden);
+            }
+            catch { }
+            try
+            {
+                using (System.IO.StreamReader f = new System.IO.StreamReader("~field.t"))
+                {
+                    Fields.Text = f.ReadToEnd();
+                }
+                System.IO.File.SetAttributes("~field.t", System.IO.FileAttributes.Hidden);
             }
             catch { }
         }
@@ -97,8 +110,9 @@ namespace ReportGenerate
                     for (int i = 1; i <= count; i++)
                     {
                         string text = Report.Text;
+                        string ff = Fields.Text.ToString().Trim();
                         DateTime date = DateStart.DisplayDate.Add(TimeSpan.FromTicks((DateStop.DisplayDate.Subtract(DateStart.DisplayDate).Ticks) / count * i));
-                        await Task.Run(() => Gen(i, date, text, f));
+                        await Task.Run(() => Gen(i, date, text, ff, f));
                         PB.Value = i;
                     }
                 }
@@ -110,61 +124,52 @@ namespace ReportGenerate
             }
         }
 
-        private void Gen(int i, DateTime date, string text, System.IO.StreamWriter f)
+        private void Gen(int i, DateTime date, string text, string fields, System.IO.StreamWriter f)
         {
             try
             {
                 text = text.Replace("[N]", i.ToString());
-                string formate = "";
-                bool startChar = false;
-                foreach (char c in text)
+                foreach (string ff in fields.Split('\n'))
                 {
-                    if (c == '[')
+                    try
                     {
-                        formate = "";
-                        startChar = true;
-                    }
-                    else if (c == ']')
-                    {
-                        if (startChar)
+                        string field = ff;
+                        string num = "[" + field.Split(new[] { '\\'},2)[0].Trim() + "]";
+                        field = field.Split(new[] { '\\' }, 2)[1].Trim();
+                                Random rnd = new Random();
+                        switch (field.Split(new[] { ':' }, 2)[0].Trim())
                         {
-                            if (formate.StartsWith("D:"))
-                            {
-                                string old = "[" + formate + "]";
-                                try
-                                {
-                                    text = text.Replace(old, date.ToString(formate.Substring(2).Trim()));
-                                }
-                                catch { }
-                            }
-                            if (formate.StartsWith("V:"))
-                            {
-                                string old = "[" + formate + "]";
-                                Random rnd = new Random();
-                                try
-                                {
-                                    int a = Convert.ToInt32(formate.Substring(2).Trim().Split('_')[0]);
-                                    int b = Convert.ToInt32(formate.Substring(2).Trim().Split('_')[1]);
-                                    text = text.Replace(old, rnd.Next(a, b + 1).ToString());
-                                }
-                                catch { }
-                            }
-                            if (formate.StartsWith("M:"))
-                            {
-                                string old = "[" + formate + "]";
-                                Random rnd = new Random();
-                                try
-                                {
-                                    string[] m = formate.Substring(2).Trim().Split(',');
-                                    text = text.Replace(old, m[rnd.Next(m.Length)].Trim());
-                                }
-                                catch { }
-                            }
+                            case "D":
+                                field = date.ToString(field.Split(new[] { ':' }, 2)[1].Trim());
+                                break;
+                            case "V":
+                                field = field.Split(new[] { ':' }, 2)[1].Trim();
+                                int cou = Convert.ToInt32(field.Split(new[] { '|' })[2].Trim());
+                                double min = Convert.ToInt32(field.Split(new[] { '|' })[0].Trim());
+                                double max = Convert.ToInt32(field.Split(new[] { '|' })[1].Trim());
+                                double v = rnd.Next((int)min, (int)max) + rnd.NextDouble();
+                                if (v < min)
+                                    v = min;
+                                if (v > max)
+                                    v = max;
+                                string format = (cou > 0 ? "#0.": "#0");
+                                for (int j=0; j<cou; j++)
+                                    format += "0";
+                                field = v.ToString(format);
+                                break;
+                            case "L":
+                                field = field.Split(new[] { ':' }, 2)[1].Trim().Split('|')[rnd.Next(field.Split(new[] { ':' }, 2)[1].Trim().Split('|').Length)];
+                                break;
+                            case "B":
+                                field = (rnd.Next(2) == 0 ? "True" : "False");
+                                break;
+                            default:
+                                field = "";
+                                break;
                         }
-                        startChar = false;
+                        text = text.Replace(num, field);
                     }
-                    else if (startChar)
-                            formate += c;
+                    catch { }
                 }
                 f.Write("<" + i.ToString() + "\n" + text + "\n>\n");
             }
@@ -173,7 +178,7 @@ namespace ReportGenerate
 
         private void Count_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (!Char.IsDigit(e.Text, 0))
+            if (!Char.IsDigit(e.Text, 0) && e.Text[0] == ' ')
             {
                 e.Handled = true;
             }
@@ -181,12 +186,45 @@ namespace ReportGenerate
 
         private void Report_TextChanged(object sender, TextChangedEventArgs e)
         {
-            System.IO.File.SetAttributes("~text.t", System.IO.FileAttributes.Normal);
+            try
+            {
+                System.IO.File.SetAttributes("~text.t", System.IO.FileAttributes.Normal);
+            }
+            catch { }
             using (System.IO.StreamWriter f = new System.IO.StreamWriter("~text.t"))
             {
                 f.Write(Report.Text);
             }
             System.IO.File.SetAttributes("~text.t", System.IO.FileAttributes.Hidden);
+        }
+
+        private void Fields_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                System.IO.File.SetAttributes("~field.t", System.IO.FileAttributes.Normal);
+            }
+            catch { }
+            using (System.IO.StreamWriter f = new System.IO.StreamWriter("~field.t"))
+            {
+                f.Write(Fields.Text);
+            }
+            System.IO.File.SetAttributes("~field.t", System.IO.FileAttributes.Hidden);
+        }
+
+        private void Fields_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FieldsOpen();
+        }
+
+        private void FieldsOpen()
+        {
+            FieldsWindow f = new FieldsWindow(Fields.Text)
+            {
+                Owner = this
+            };
+            if (f.ShowDialog() == true)
+                Fields.Text = f.Result;
         }
     }
 }

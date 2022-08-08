@@ -1,0 +1,85 @@
+﻿<Window x:Class="ReportGenerate.NumericWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReportGenerate"
+        mc:Ignorable="d"
+        Title="" 
+        Height="250" 
+        Width="200" 
+        ResizeMode="NoResize" 
+        Icon="/Report.png" 
+        WindowStartupLocation="CenterOwner" 
+        ShowInTaskbar="False" 
+        WindowStyle="None" 
+        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" 
+        BorderThickness="1,1,1,1">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0"
+               Content="от" 
+               HorizontalContentAlignment="Center" 
+               VerticalContentAlignment="Bottom"/>
+        <Label Grid.Row="2"
+               Content="до" 
+               HorizontalContentAlignment="Center" 
+               VerticalContentAlignment="Bottom"/>
+        <Label Grid.Row="4"
+               Content="Точность" 
+               HorizontalContentAlignment="Center" 
+               VerticalContentAlignment="Bottom"/>
+        <TextBox x:Name="BothVal"
+                 TabIndex="0"
+                 Grid.Row="1" 
+                 HorizontalContentAlignment="Center"
+                 Background="{x:Null}" 
+                 BorderBrush="{x:Null}" 
+                 SelectionBrush="{x:Null}"
+                 Text="0" 
+                 VerticalContentAlignment="Center" 
+                 FontWeight="Bold" 
+                 FontSize="16"/>
+        <TextBox x:Name="TopVal"
+                 TabIndex="1"
+                 Grid.Row="3" 
+                 HorizontalContentAlignment="Center"
+                 Background="{x:Null}" 
+                 BorderBrush="{x:Null}" 
+                 SelectionBrush="{x:Null}" 
+                 VerticalContentAlignment="Center" 
+                 Text="9" 
+                 FontWeight="Bold" 
+                 FontSize="16" />
+        <TextBox x:Name="Format"
+                 TabIndex="2"
+                 Grid.Row="5" 
+                 HorizontalContentAlignment="Center"
+                 Background="{x:Null}" 
+                 BorderBrush="{x:Null}" 
+                 SelectionBrush="{x:Null}" 
+                 Text="0" 
+                 VerticalContentAlignment="Center" 
+                 FontWeight="Bold" 
+                 FontSize="16" PreviewTextInput="Format_PreviewTextInput"/>
+        <Button x:Name="Save"
+                Grid.Row="7"
+                TabIndex="3"
+                Content="✔" 
+                BorderBrush="{x:Null}" 
+                Background="{x:Null}"
+                FontWeight="Bold" 
+                FontSize="16" 
+                Click="Save_Click"/>
+    </Grid>
+</Window>

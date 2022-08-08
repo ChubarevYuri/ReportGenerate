@@ -5,9 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReportGenerate"
         mc:Ignorable="d"
-        Title="Протокол++" Height="450" Width="800"
+        Title="Протокол++" 
+        Height="450" 
+        Width="800"
         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-        Icon="/Report.png" MinWidth="370" MinHeight="250">
+        Icon="/Report.png" 
+        MinWidth="400" 
+        MinHeight="400"
+        BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
+        BorderThickness="1,1,1,1">
     <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
@@ -25,7 +31,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
@@ -33,23 +41,24 @@
                     Content="Путь к файлу" 
                     HorizontalAlignment="Stretch" 
                     Margin="5,5,5,5" 
-                    Grid.Row="7" 
+                    Grid.Row="9" 
                     VerticalAlignment="Stretch" 
                     Background="White" 
                     Click="Path_Click" 
                     FontWeight="Bold" 
                     FontSize="14" 
-                    TabIndex="4"/>
+                    TabIndex="5"/>
             <Button x:Name="Save" 
                     Content="Выполнить" 
                     HorizontalAlignment="Stretch" 
-                    Margin="5,5,5,5" Grid.Row="8" 
+                    Margin="5,5,5,5" 
+                    Grid.Row="10" 
                     VerticalAlignment="Stretch" 
                     Background="White" 
                     Click="Save_Click" 
                     FontWeight="Bold" 
                     FontSize="14" 
-                    TabIndex="5"/>
+                    TabIndex="6"/>
             <Label Content="Количество протоколов" 
                    Margin="0,0,0,0" 
                    Grid.Row="0" 
@@ -71,8 +80,15 @@
                    HorizontalContentAlignment="Center" 
                    FontWeight="Bold" 
                    Padding="1,5,1,1" />
+            <Label Content="Поля" 
+                   Margin="0,0,0,0" 
+                   Grid.Row="6" 
+                   VerticalContentAlignment="Bottom" 
+                   HorizontalContentAlignment="Center" 
+                   FontWeight="Bold" 
+                   Padding="1,5,1,1" />
             <TextBox x:Name="Count" 
-                     Margin="5,0,5,0" 
+                     Margin="5,0,5,0"
                      Grid.Row="1" 
                      VerticalContentAlignment="Center" 
                      HorizontalContentAlignment="Center" 
@@ -86,7 +102,7 @@
                      FontSize="16" 
                      UndoLimit="9" 
                      VerticalScrollBarVisibility="Disabled" 
-                     TabIndex="0">
+                     TabIndex="1">
                 <TextBox.Background>
                     <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
                 </TextBox.Background>
@@ -109,7 +125,29 @@
                         FirstDayOfWeek="Monday" 
                         RenderTransformOrigin="0.5,0.5" 
                         TabIndex="3"/>
-            <TextBlock x:Name="TBtimer" HorizontalAlignment="Stretch" Margin="5,0,5,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Bottom" TextAlignment="Center" TextTrimming="WordEllipsis"/>
+            <TextBox x:Name="Fields" 
+                     HorizontalAlignment="Stretch" 
+                     TabIndex="4"
+                     Margin="5,0,5,0" 
+                     Grid.Row="7" 
+                     TextWrapping="Wrap" 
+                     AcceptsReturn="True" 
+                     VerticalAlignment="Stretch" 
+                     TextAlignment="Left" 
+                     BorderBrush="{x:Null}" 
+                     SelectionBrush="{x:Null}" 
+                     Background="{x:Null}" 
+                     TextChanged="Fields_TextChanged" 
+                     MouseDoubleClick="Fields_MouseDoubleClick">
+            </TextBox>
+            <TextBlock x:Name="TBtimer" 
+                       HorizontalAlignment="Stretch" 
+                       Margin="5,0,5,0" 
+                       Grid.Row="8" 
+                       TextWrapping="Wrap" 
+                       VerticalAlignment="Bottom" 
+                       TextAlignment="Center" 
+                       TextTrimming="WordEllipsis"/>
         </Grid>
         <Grid Grid.Column="1" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
@@ -124,19 +162,20 @@
                      SelectionOpacity="0"
                      AcceptsReturn="True" 
                      BorderBrush="{x:Null}" 
-                     TabIndex="1" 
+                     TabIndex="0" 
                      SelectionBrush="{x:Null}" 
-                     Background="{x:Null}" TextChanged="Report_TextChanged"/>
+                     Background="{x:Null}" 
+                     TextChanged="Report_TextChanged"/>
             <TextBlock Grid.Row="1"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Stretch"
                        Margin="0,0,0,0"
-                       TextWrapping="Wrap" TextTrimming="WordEllipsis" LineStackingStrategy="BlockLineHeight">
+                       TextWrapping="Wrap" 
+                       TextTrimming="WordEllipsis" 
+                       LineStackingStrategy="BlockLineHeight">
                 <TextBlock.Text>
                     [N] - номер протокола;
-                    [D: format] - дата;
-                    [V: a_b] - случайное число между;
-                    [M: a,b,c] - случайное из массива.
+                    [int] - подставляемое поле.
                 </TextBlock.Text>
             </TextBlock>
         </Grid>

@@ -59,6 +59,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DateWindow.xaml.cs">
+      <DependentUpon>DateWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ListWindow.xaml.cs">
+      <DependentUpon>ListWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NumericWindow.xaml.cs">
+      <DependentUpon>NumericWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TypeWindow.xaml.cs">
+      <DependentUpon>TypeWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="DateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FieldsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,10 +91,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FieldsWindow.xaml.cs">
+      <DependentUpon>FieldsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NumericWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TypeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
