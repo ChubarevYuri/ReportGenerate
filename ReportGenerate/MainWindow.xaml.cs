@@ -105,6 +105,7 @@ namespace ReportGenerate
                 }
                 catch { }
                 PB.Maximum = count;
+                Random rnd = new Random();
                 using (System.IO.StreamWriter f = new System.IO.StreamWriter(filePath, true))
                 {
                     for (int i = 1; i <= count; i++)
@@ -112,7 +113,7 @@ namespace ReportGenerate
                         string text = Report.Text;
                         string ff = Fields.Text.ToString().Trim();
                         DateTime date = DateStart.DisplayDate.Add(TimeSpan.FromTicks((DateStop.DisplayDate.Subtract(DateStart.DisplayDate).Ticks) / count * i));
-                        await Task.Run(() => Gen(i, date, text, ff, f));
+                        await Task.Run(() => Gen(i, date, text, ff, f, rnd));
                         PB.Value = i;
                     }
                 }
@@ -124,7 +125,7 @@ namespace ReportGenerate
             }
         }
 
-        private void Gen(int i, DateTime date, string text, string fields, System.IO.StreamWriter f)
+        private void Gen(int i, DateTime date, string text, string fields, System.IO.StreamWriter f, Random rnd)
         {
             try
             {
@@ -136,7 +137,6 @@ namespace ReportGenerate
                         string field = ff;
                         string num = "[" + field.Split(new[] { '\\'},2)[0].Trim() + "]";
                         field = field.Split(new[] { '\\' }, 2)[1].Trim();
-                                Random rnd = new Random();
                         switch (field.Split(new[] { ':' }, 2)[0].Trim())
                         {
                             case "D":
